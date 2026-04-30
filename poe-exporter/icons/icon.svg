@@ -1,0 +1,44 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Poe Chat Exporter icon">
+  <defs>
+    <linearGradient id="downloadGradient" x1="72" y1="70" x2="113" y2="115" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#12101D"/>
+      <stop offset="1" stop-color="#46228C"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="#FFFFFF"/>
+  <rect x="8.5" y="8.5" width="111" height="111" rx="27.5" stroke="#EEF0F4"/>
+
+  <g transform="translate(-3 -2) scale(1.06)">
+    <!-- Poe-like bot outline: keep the original arch proportions and scale the whole mark instead of reshaping it. -->
+    <path
+      d="M34 76C22 74.2 15 65.6 15 54.5V43.5C15 31 27 23 42 23H83C97.5 23 106 32 106 46V59"
+      stroke="#111217"
+      stroke-width="10"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+
+    <rect x="39" y="43" width="14" height="18" rx="6" fill="#111217"/>
+    <rect x="70" y="43" width="14" height="18" rx="6" fill="#111217"/>
+    <circle cx="46" cy="48.8" r="2.55" fill="#FFFFFF"/>
+    <circle cx="77" cy="48.8" r="2.55" fill="#FFFFFF"/>
+
+    <path
+      d="M43.5 86.5L61 69.5H79"
+      stroke="#111217"
+      stroke-width="10"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+
+    <path d="M27 88L37 78" stroke="#4E7BFF" stroke-width="8" stroke-linecap="round"/>
+    <path d="M38 99L51 86" stroke="#9B4DFF" stroke-width="8" stroke-linecap="round"/>
+    <path d="M50 105L65 90" stroke="#FF3DB8" stroke-width="8" stroke-linecap="round"/>
+
+    <circle cx="91.5" cy="89" r="28" fill="url(#downloadGradient)"/>
+    <path d="M91.5 71V94" stroke="white" stroke-width="9" stroke-linecap="round"/>
+    <path d="M79 84.5L91.5 97L104 84.5" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M79 106H104" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  </g>
+</svg>
