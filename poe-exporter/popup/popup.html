@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Poe Chat Exporter</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="header">
+    <div class="logo">📄</div>
+    <h1>Poe Exporter</h1>
+  </div>
+
+  <div id="status-container" class="status-container">
+    <div class="spinner" id="spinner"></div>
+    <p id="status-text">正在检测页面...</p>
+  </div>
+
+  <div id="action-container" class="action-container hidden">
+    <div class="chat-info">
+      <h2 id="chat-title" class="truncate">-</h2>
+      <p class="meta">
+        <span id="bot-name">-</span> • <span id="message-count">0</span> 条消息
+      </p>
+    </div>
+
+    <div class="warning-box">
+      <strong>提示：</strong> 导出时会自动向上加载当前对话历史，长对话可能需要等待一会儿。
+    </div>
+
+    <div class="button-group">
+      <button id="btn-export-md" class="btn primary">
+        <span class="icon">📝</span> 导出当前为 Markdown
+      </button>
+      <button id="btn-export-json" class="btn outline">
+        <span class="icon">{"}</span> 导出当前为 JSON
+      </button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="batch-section">
+      <h3 class="section-title">批量作业</h3>
+      <p class="meta">从左侧边栏导出多个会话</p>
+      
+      <div id="batch-progress" class="batch-progress hidden">
+        <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+        <p id="progress-text">进度: 0/0</p>
+      </div>
+
+      <div class="button-group">
+        <button id="btn-batch-export" class="btn primary batch-btn">
+          <span class="icon">🚀</span> 批量导出侧边栏对话 (Markdown合并)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="error-container" class="error-container hidden">
+    <p id="error-text">出错了，请稍后重试。</p>
+    <button id="btn-retry" class="btn outline small">重试</button>
+  </div>
+
+  <script src="../utils/turndown.js"></script>
+  <script src="../utils/turndown-plugin-gfm.js"></script>
+  <script src="../utils/formatter.js"></script>
+  <script src="../utils/downloader.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

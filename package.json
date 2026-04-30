@@ -1,0 +1,19 @@
+{
+  "name": "poe-chat-exporter",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Chrome/Edge MV3 extension for exporting Poe chats to Markdown or JSON.",
+  "scripts": {
+    "test": "node tests/static-regression.test.js",
+    "check": "node --check poe-exporter/content.js && node --check poe-exporter/background.js && node --check poe-exporter/popup/popup.js && node --check poe-exporter/utils/formatter.js && node --check poe-exporter/utils/downloader.js && node --check poe-exporter/offscreen.js"
+  },
+  "keywords": [
+    "poe",
+    "chrome-extension",
+    "edge-extension",
+    "markdown",
+    "json",
+    "export"
+  ],
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Poe Chat Exporter",
+  "version": "1.0.0",
+  "description": "Export Poe.com conversations to JSON or Markdown format with one click.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "downloads",
+    "offscreen",
+    "debugger"
+  ],
+  "host_permissions": [
+    "https://poe.com/*"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "Poe Chat Exporter"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://poe.com/chat/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

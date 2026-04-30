@@ -1,0 +1,18 @@
+.DS_Store
+
+# Local/private investigation artifacts
+result1/
+test_web/
+test_extension/
+skills/
+
+# Editor and OS noise
+.idea/
+.vscode/
+*.log
+
+# Dependency/build caches
+node_modules/
+dist/
+build/
+coverage/
