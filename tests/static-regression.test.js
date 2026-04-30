@@ -121,6 +121,18 @@ test('scroll export triggers Poe history loading through message anchors and mul
     'content script must request trusted background scrolling during auto_export'
   );
   assert(
+    content.includes('detectTrustedScrollDeltaY'),
+    'content script must auto-detect the effective trusted wheel direction'
+  );
+  assert(
+    content.includes('trustedScrollDeltaY'),
+    'content script must cache the detected trusted wheel direction'
+  );
+  assert(
+    content.includes('getHistoryLoadState'),
+    'content script must compare message and scroll state after direction probes'
+  );
+  assert(
     background.includes("message.action === 'trusted_scroll'"),
     'background must handle trusted_scroll messages'
   );

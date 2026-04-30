@@ -61,6 +61,7 @@ The shared bugfix queue is tracked in `BUGFIX_COORDINATION.md`. Agents must foll
 - Normal single-chat export uses the content script `auto_export` flow so it can load earlier virtualized messages before downloading.
 - Scroll export tries all likely scroll targets, anchors on the first visible message, and dispatches upward wheel events to trigger Poe's virtualized history loading.
 - When DOM wheel events are ignored, scroll export requests a trusted `Input.dispatchMouseEvent` mouse-wheel event from the background worker.
+- Trusted wheel direction is detected at runtime because Poe's chat container can use reverse or negative `scrollTop` behavior.
 - Batch export waits for message content readiness before extraction and must not rely on a fixed 3.5 second delay.
 - Scroll export deduplicates messages with a stable full-message key, not `role + first 100 characters`.
 - Historical samples in `result1/` are evidence only for past behavior; they are not current bug reports.

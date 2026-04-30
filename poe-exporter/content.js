@@ -7,6 +7,8 @@
 
 console.log('[PoeExporter] Content script loaded on:', window.location.href);
 
+let trustedScrollDeltaY = null;
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function tryQuery(root, selectorList, all = false) {
@@ -222,6 +224,30 @@ function getScrollSignature(targets) {
   }).join(';');
 }
 
+function getHistoryLoadState(targets) {
+  const messages = extractMessages();
+  const earliestKey = messages[0] ? createMessageKey(messages[0]) : '';
+  const latestKey = messages[messages.length - 1] ? createMessageKey(messages[messages.length - 1]) : '';
+  return {
+    messageCount: messages.length,
+    earliestKey,
+    latestKey,
+    signature: getScrollSignature(targets),
+  };
+}
+
+function isHistoryLoadProgress(before, after) {
+  return (
+    after.messageCount > before.messageCount ||
+    (before.earliestKey && after.earliestKey && before.earliestKey !== after.earliestKey) ||
+    before.signature !== after.signature
+  );
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function dispatchHistoryWheel(target) {
   const wheelEvent = new WheelEvent('wheel', {
     bubbles: true,
@@ -250,14 +276,14 @@ function getTrustedScrollPoint(targets) {
   return { x, y };
 }
 
-function requestTrustedHistoryScroll(targets) {
+function requestTrustedHistoryScroll(targets, deltaY) {
   const point = getTrustedScrollPoint(targets);
   return new Promise((resolve) => {
     chrome.runtime.sendMessage({
       action: 'trusted_scroll',
       x: point.x,
       y: point.y,
-      deltaY: -900,
+      deltaY,
     }, (response) => {
       if (chrome.runtime.lastError || !response || !response.success) {
         const errorMessage = chrome.runtime.lastError ? chrome.runtime.lastError.message : response?.error;
@@ -274,9 +300,40 @@ function endTrustedHistoryScroll() {
   chrome.runtime.sendMessage({ action: 'trusted_scroll_end' }, () => {});
 }
 
+async function detectTrustedScrollDeltaY(targets) {
+  if (trustedScrollDeltaY !== null) return trustedScrollDeltaY;
+
+  const primaryTarget = targets.find(target => target && target !== window && target !== document);
+  const primaryScrollTop = primaryTarget && typeof primaryTarget.scrollTop === 'number' ? primaryTarget.scrollTop : 0;
+  const candidates = primaryScrollTop < 0 ? [900, -900] : [-900, 900];
+
+  for (const deltaY of candidates) {
+    const before = getHistoryLoadState(targets);
+    const sent = await requestTrustedHistoryScroll(targets, deltaY);
+    if (!sent) continue;
+
+    await delay(1200);
+    const after = getHistoryLoadState(probeScrollableTargets(findScrollTargets()));
+    console.log(
+      `[PoeExporter] Trusted wheel probe deltaY=${deltaY}: messages ${before.messageCount}->${after.messageCount}, signatureChanged=${before.signature !== after.signature}`
+    );
+
+    if (isHistoryLoadProgress(before, after)) {
+      trustedScrollDeltaY = deltaY;
+      console.log('[PoeExporter] Trusted wheel direction selected:', trustedScrollDeltaY);
+      return trustedScrollDeltaY;
+    }
+  }
+
+  trustedScrollDeltaY = candidates[0];
+  console.warn('[PoeExporter] Trusted wheel direction probe inconclusive, using:', trustedScrollDeltaY);
+  return trustedScrollDeltaY;
+}
+
 async function triggerHistoryLoad(targets) {
   const eventTargets = targets.length > 0 ? targets : findHistoryEventTargets();
-  const trusted = await requestTrustedHistoryScroll(eventTargets);
+  const deltaY = await detectTrustedScrollDeltaY(eventTargets);
+  const trusted = await requestTrustedHistoryScroll(eventTargets, deltaY);
   console.log('[PoeExporter] Trusted wheel event:', trusted ? 'sent' : 'fallback only');
   if (trusted) return;
 

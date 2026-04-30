@@ -46,6 +46,11 @@
 - Evidence: `node tests/static-regression.test.js`, `node --check poe-exporter/content.js`, `node --check poe-exporter/background.js`, and `node --check poe-exporter/popup/popup.js` pass.
 - Next: Reload the extension and retest. If message count still stays flat, capture the `Scroll targets` line and whether visible flicker is gone; next adjustment should focus on wheel `deltaY` direction/size or target coordinate.
 
+### 2026-04-30 Codex Follow-up
+- Finding: Since the logged Poe scroll target can report negative `scrollTop`, fixed `deltaY=-900` is likely wrong for some chat layouts. `auto_export` now probes both trusted wheel directions, compares message count, earliest message key, and scroll signature after each probe, then caches the effective `trustedScrollDeltaY` for the rest of the export loop.
+- Evidence: `node tests/static-regression.test.js` and `npm run check` pass.
+- Next: Reload and retest. Watch for `[PoeExporter] Trusted wheel probe deltaY=...` and `[PoeExporter] Trusted wheel direction selected:` to confirm which direction Poe accepts.
+
 ### YYYY-MM-DD AgentName
 - Finding:
 - Evidence:
