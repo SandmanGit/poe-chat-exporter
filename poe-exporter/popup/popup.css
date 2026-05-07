@@ -35,25 +35,6 @@ body {
   display: none !important;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(0,0,0,0.02);
-}
-
-.logo {
-  font-size: 24px;
-  margin-right: 12px;
-}
-
-h1 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-}
-
 .truncate {
   white-space: nowrap;
   overflow: hidden;
